@@ -1,3 +1,6 @@
+
+using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,4 +36,11 @@ public class IndexModel : HospitalManagementPageModel
 
         Patients = result.Items.ToList();
     }
+
+
+    public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+{
+    await _patientAppService.DeleteAsync(id);
+    return RedirectToPage();
+}
 }

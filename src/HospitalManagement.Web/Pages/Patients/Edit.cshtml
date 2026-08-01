@@ -1,0 +1,36 @@
+@page "{id:guid}"
+@model HospitalManagement.Web.Pages.Patients.EditModel
+
+<div class="container mt-4">
+    <h2>Hasta Düzenle</h2>
+
+    <form method="post">
+        <div class="mb-3">
+            <label>T.C. Kimlik Numarası</label>
+            <input asp-for="Patient.IdentityNumber" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Ad</label>
+            <input asp-for="Patient.FirstName" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Soyad</label>
+            <input asp-for="Patient.LastName" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Doğum Tarihi</label>
+            <input asp-for="Patient.BirthDate" type="date" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label>Telefon Numarası</label>
+            <input asp-for="Patient.PhoneNumber" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+        <a asp-page="./Index" class="btn btn-secondary">İptal</a>
+    </form>
+</div>

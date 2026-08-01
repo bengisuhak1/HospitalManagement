@@ -40,13 +40,20 @@
                             <td>@patient.PhoneNumber</td>
 
                             <td>
-                                <button class="btn btn-sm btn-warning">
-                                    Düzenle
-                                </button>
-
-                                <button class="btn btn-sm btn-danger">
-                                    Sil
-                                </button>
+                                <a asp-page="./Edit" asp-route-id="@patient.Id"
+   class="btn btn-sm btn-warning">
+    Düzenle
+</a>
+<form method="post"
+      asp-page-handler="Delete"
+      asp-route-id="@patient.Id"
+      style="display:inline;"
+      onsubmit="return confirm('Bu hastayı silmek istediğinize emin misiniz?');">
+                               
+    <button type="submit" class="btn btn-sm btn-danger">
+        Sil
+    </button>
+</form>
                             </td>
                         </tr>
                     }

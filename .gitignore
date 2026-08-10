@@ -268,3 +268,4 @@ src/HospitalManagement.Blazor.Server.Tiered/Logs/*
 
 # Runtime logs
 **/Logs/
+.vscode/

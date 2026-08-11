@@ -13,7 +13,25 @@
     Yeni Hasta Ekle
 </a>
     </div>
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-8">
+        <input asp-for="SearchTerm"
+               class="form-control"
+               placeholder="Ad, soyad, T.C. kimlik veya telefon ara..." />
+    </div>
 
+    <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-primary">
+            Ara
+        </button>
+    </div>
+
+    <div class="col-md-2 d-grid">
+        <a asp-page="./Index" class="btn btn-outline-secondary">
+            Temizle
+        </a>
+    </div>
+</form>
     <div class="card">
         <div class="card-body">
 

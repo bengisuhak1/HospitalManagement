@@ -1,0 +1,33 @@
+@page
+@model HospitalManagement.Web.Pages.ClinicLoginModel
+
+@{
+    ViewData["Title"] = "Klinik Girişi";
+}
+
+<div class="clinic-login-shell">
+    <main class="clinic-login-card">
+        <div class="clinic-login-brand"><i class="fas fa-briefcase-medical"></i></div>
+        <span class="clinic-eyebrow">HOSPITAL MANAGEMENT</span>
+        <h1>Klinik Yönetimi</h1>
+        <p>Çalışma profilinizi seçmek için giriş yapın.</p>
+
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+        }
+
+        <form method="post" class="clinic-login-form">
+            <div>
+                <label asp-for="Username" class="form-label">Kullanıcı Adı</label>
+                <div class="clinic-login-input"><i class="fas fa-user"></i><input asp-for="Username" class="form-control" autocomplete="username" autofocus /></div>
+            </div>
+            <div>
+                <label asp-for="Password" class="form-label">Şifre</label>
+                <div class="clinic-login-input"><i class="fas fa-lock"></i><input asp-for="Password" type="password" class="form-control" autocomplete="current-password" /></div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100"><i class="fas fa-sign-in-alt me-2"></i>Giriş Yap</button>
+        </form>
+        <small>Demo: herhangi bir kullanıcı adı / 1</small>
+    </main>
+</div>

@@ -1,0 +1,61 @@
+@page
+@model HospitalManagement.Web.Pages.ExaminationNotes.IndexModel
+
+@{
+    ViewData["Title"] = "Muayene Notları";
+}
+
+<div class="container py-4">
+    <header class="clinic-page-header">
+        <div><span class="clinic-eyebrow">SAĞLIK KAYITLARI</span><h1>Muayene Notları</h1><p>Şikâyet, teşhis ve tedavi geçmişini görüntüleyin.</p></div>
+        <a asp-page="./Create" class="btn btn-primary"><i class="fas fa-notes-medical me-2"></i>Yeni Muayene Notu</a>
+    </header>
+
+    <div class="card">
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Tarih</th>
+                            <th>Hasta</th>
+                            <th>Doktor</th>
+                            <th>Şikâyet</th>
+                            <th>Teşhis</th>
+                            <th>Tedavi</th>
+                            <th>Not</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var note in Model.ExaminationNotes)
+                        {
+                            <tr>
+                                <td>@note.ExaminationDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                <td>@Model.PatientNames.GetValueOrDefault(note.PatientId, "Hasta bulunamadı")</td>
+                                <td>@Model.DoctorNames.GetValueOrDefault(note.DoctorId, "Doktor bulunamadı")</td>
+                                <td>@note.Complaint</td>
+                                <td class="fw-semibold">@note.Diagnosis</td>
+                                <td>@note.Treatment</td>
+                                <td>@note.Notes</td>
+                                <td>
+                                    <form method="post"
+                                          asp-page-handler="Delete"
+                                          asp-route-id="@note.Id"
+                                          onsubmit="return confirm('Bu muayene notunu silmek istediğinize emin misiniz?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Sil"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.ExaminationNotes.Count == 0)
+            {
+                <div class="clinic-empty-state"><i class="fas fa-notes-medical"></i><strong>Muayene notu bulunamadı</strong><span>Yeni bir muayene notu oluşturabilirsiniz.</span></div>
+            }
+        </div>
+    </div>
+</div>

@@ -14,7 +14,11 @@ using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using HospitalManagement.Patients;
-
+using HospitalManagement.Doctors;
+using HospitalManagement.Appointments;
+using HospitalManagement.LabResults;
+using HospitalManagement.Prescriptions;
+using HospitalManagement.ExaminationNotes;
 namespace HospitalManagement.EntityFrameworkCore;
 
 [ReplaceDbContext(typeof(IIdentityDbContext))]
@@ -26,8 +30,11 @@ public class HospitalManagementDbContext :
     IIdentityDbContext
 {
    public DbSet<Patient> Patients { get; set; }
-
-
+public DbSet<Doctor> Doctors { get; set; }
+public DbSet<Appointment> Appointments { get; set; }
+public DbSet<LabResult> LabResults { get; set; }
+public DbSet<Prescription> Prescriptions { get; set; }
+public DbSet<ExaminationNote> ExaminationNotes { get; set; }
     #region Entities from the modules
 
     /* Notice: We only implemented IIdentityProDbContext and ISaasDbContext
@@ -109,6 +116,150 @@ public class HospitalManagementDbContext :
     // Aynı T.C. kimlik numarasıyla iki hasta kaydedilemez
     patient.HasIndex(x => x.IdentityNumber)
         .IsUnique();
+});  builder.Entity<Doctor>(doctor =>
+{
+    doctor.ToTable("Doctors");
+
+    doctor.ConfigureByConvention();
+
+    doctor.Property(x => x.FirstName)
+        .IsRequired()
+        .HasMaxLength(64);
+
+    doctor.Property(x => x.LastName)
+        .IsRequired()
+        .HasMaxLength(64);
+
+    doctor.Property(x => x.Specialty)
+        .IsRequired()
+        .HasMaxLength(100);
+
+    doctor.Property(x => x.PhoneNumber)
+        .IsRequired()
+        .HasMaxLength(20);
+});
+builder.Entity<Appointment>(appointment =>
+{
+    appointment.ToTable("Appointments");
+
+    appointment.ConfigureByConvention();
+
+    appointment.Property(x => x.PatientId)
+        .IsRequired();
+
+    appointment.Property(x => x.DoctorId)
+        .IsRequired();
+
+    appointment.Property(x => x.AppointmentDate)
+        .IsRequired();
+
+    appointment.Property(x => x.Status)
+        .IsRequired()
+        .HasMaxLength(32);
+
+    appointment.Property(x => x.Notes)
+        .HasMaxLength(500);
+
+    appointment.HasIndex(x => x.PatientId);
+    appointment.HasIndex(x => x.DoctorId);
+    appointment.HasIndex(x => x.AppointmentDate);
+});
+builder.Entity<LabResult>(labResult =>
+{
+    labResult.ToTable("LabResults");
+
+    labResult.ConfigureByConvention();
+
+    labResult.Property(x => x.PatientId)
+        .IsRequired();
+
+    labResult.Property(x => x.TestName)
+        .IsRequired()
+        .HasMaxLength(128);
+
+    labResult.Property(x => x.ResultValue)
+        .IsRequired()
+        .HasMaxLength(64);
+
+    labResult.Property(x => x.Unit)
+        .HasMaxLength(32);
+
+    labResult.Property(x => x.ReferenceRange)
+        .HasMaxLength(64);
+
+    labResult.Property(x => x.Status)
+        .IsRequired()
+        .HasMaxLength(32);
+
+    labResult.Property(x => x.ResultDate)
+        .IsRequired();
+
+    labResult.HasIndex(x => x.PatientId);
+    labResult.HasIndex(x => x.ResultDate);
+});
+builder.Entity<Prescription>(prescription =>
+{
+    prescription.ToTable("Prescriptions");
+
+    prescription.ConfigureByConvention();
+
+    prescription.Property(x => x.PatientId).IsRequired();
+    prescription.Property(x => x.DoctorId).IsRequired();
+
+    prescription.Property(x => x.MedicationName)
+        .IsRequired()
+        .HasMaxLength(128);
+
+    prescription.Property(x => x.Dosage)
+        .IsRequired()
+        .HasMaxLength(64);
+
+    prescription.Property(x => x.Frequency)
+        .IsRequired()
+        .HasMaxLength(64);
+
+    prescription.Property(x => x.Duration)
+        .IsRequired()
+        .HasMaxLength(64);
+
+    prescription.Property(x => x.Instructions)
+        .HasMaxLength(500);
+
+    prescription.Property(x => x.PrescriptionDate).IsRequired();
+
+    prescription.HasIndex(x => x.PatientId);
+    prescription.HasIndex(x => x.DoctorId);
+    prescription.HasIndex(x => x.PrescriptionDate);
+});
+builder.Entity<ExaminationNote>(examinationNote =>
+{
+    examinationNote.ToTable("ExaminationNotes");
+
+    examinationNote.ConfigureByConvention();
+
+    examinationNote.Property(x => x.PatientId).IsRequired();
+    examinationNote.Property(x => x.DoctorId).IsRequired();
+
+    examinationNote.Property(x => x.Complaint)
+        .IsRequired()
+        .HasMaxLength(500);
+
+    examinationNote.Property(x => x.Diagnosis)
+        .IsRequired()
+        .HasMaxLength(500);
+
+    examinationNote.Property(x => x.Treatment)
+        .IsRequired()
+        .HasMaxLength(1000);
+
+    examinationNote.Property(x => x.Notes)
+        .HasMaxLength(1000);
+
+    examinationNote.Property(x => x.ExaminationDate).IsRequired();
+
+    examinationNote.HasIndex(x => x.PatientId);
+    examinationNote.HasIndex(x => x.DoctorId);
+    examinationNote.HasIndex(x => x.ExaminationDate);
 });
     }
 }

@@ -5,37 +5,32 @@
     ViewData["Title"] = "Hasta Yönetimi";
 }
 
-<div class="container mt-4">
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Hasta Yönetimi</h2>
-<a asp-page="./Create" class="btn btn-primary">
-    Yeni Hasta Ekle
-</a>
-    </div>
-<form method="get" class="row g-2 mb-3">
-    <div class="col-md-8">
-        <input asp-for="SearchTerm"
-               class="form-control"
-               placeholder="Ad, soyad, T.C. kimlik veya telefon ara..." />
-    </div>
-
-    <div class="col-md-2 d-grid">
-        <button type="submit" class="btn btn-primary">
-            Ara
-        </button>
-    </div>
-
-    <div class="col-md-2 d-grid">
-        <a asp-page="./Index" class="btn btn-outline-secondary">
-            Temizle
+<div class="container py-4">
+    <header class="clinic-page-header">
+        <div>
+            <span class="clinic-eyebrow">HASTA YÖNETİMİ</span>
+            <h1>Hastalar</h1>
+            <p>Kayıtlı hastaları görüntüleyin ve sağlık bilgilerine ulaşın.</p>
+        </div>
+        <a asp-page="./Create" class="btn btn-primary">
+            <i class="fas fa-user-plus me-2"></i>Yeni Hasta
         </a>
-    </div>
-</form>
-    <div class="card">
-        <div class="card-body">
+    </header>
 
-            <table class="table table-striped table-hover">
+    <div class="card clinic-list-card">
+        <div class="card-body p-4">
+            <form method="get" class="clinic-search-bar mb-4">
+                <div class="clinic-search-input">
+                    <i class="fas fa-search"></i>
+                    <input asp-for="SearchTerm" class="form-control"
+                           placeholder="Ad, soyad, T.C. kimlik veya telefon ara..." />
+                </div>
+                <button type="submit" class="btn btn-primary">Ara</button>
+                <a asp-page="./Index" class="btn btn-outline-secondary">Temizle</a>
+            </form>
+
+            <div class="table-responsive">
+            <table class="table align-middle mb-0">
                 <thead>
                     <tr>
                         <th>T.C. Kimlik Numarası</th>
@@ -52,36 +47,37 @@
                     {
                         <tr>
                             <td>@patient.IdentityNumber</td>
-                            <td>@patient.FirstName</td>
-                            <td>@patient.LastName</td>
+                            <td colspan="2">
+                                <div class="clinic-person-cell">
+                                    <span>@patient.FirstName.Substring(0, 1)@patient.LastName.Substring(0, 1)</span>
+                                    <strong>@patient.FirstName @patient.LastName</strong>
+                                </div>
+                            </td>
                             <td>@patient.BirthDate.ToString("dd.MM.yyyy")</td>
                             <td>@patient.PhoneNumber</td>
 
-                            <td>
+                            <td class="text-nowrap">
+                                <a asp-page="./Details" asp-route-id="@patient.Id"
+                                   class="btn btn-sm btn-outline-primary" title="Detay"><i class="fas fa-eye"></i></a>
                                 <a asp-page="./Edit" asp-route-id="@patient.Id"
-   class="btn btn-sm btn-warning">
-    Düzenle
-</a>
-<form method="post"
-      asp-page-handler="Delete"
-      asp-route-id="@patient.Id"
-      style="display:inline;"
-      onsubmit="return confirm('Bu hastayı silmek istediğinize emin misiniz?');">
-                               
-    <button type="submit" class="btn btn-sm btn-danger">
-        Sil
-    </button>
-</form>
+                                   class="btn btn-sm btn-outline-secondary" title="Düzenle"><i class="fas fa-pen"></i></a>
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@patient.Id"
+                                      class="d-inline" onsubmit="return confirm('Bu hastayı silmek istediğinize emin misiniz?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Sil"><i class="fas fa-trash"></i></button>
+                                </form>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
+            </div>
 
             @if (Model.Patients.Count == 0)
             {
-                <div class="alert alert-info">
-                    Henüz kayıtlı hasta bulunmuyor.
+                <div class="clinic-empty-state">
+                    <i class="fas fa-users"></i>
+                    <strong>Hasta bulunamadı</strong>
+                    <span>Arama ölçütünü değiştirin veya yeni hasta ekleyin.</span>
                 </div>
             }
 

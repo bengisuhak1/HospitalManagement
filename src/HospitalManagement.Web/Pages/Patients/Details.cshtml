@@ -1,0 +1,66 @@
+@page
+@model HospitalManagement.Web.Pages.Patients.DetailsModel
+
+@{
+    ViewData["Title"] = "Hasta Detayı";
+}
+
+<div class="container py-4">
+    <header class="clinic-page-header">
+        <div class="clinic-patient-heading">
+            <span class="clinic-patient-avatar"><i class="fas fa-user"></i></span>
+            <div><span class="clinic-eyebrow">HASTA PROFİLİ</span><h1>@Model.Patient.FirstName @Model.Patient.LastName</h1><p>Hasta detayları ve sağlık geçmişi</p></div>
+        </div>
+        <a asp-page="./Index" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Hasta Listesi</a>
+    </header>
+
+    <div class="card mb-4">
+        <div class="card-body clinic-patient-info">
+            <div><i class="fas fa-id-card"></i><span><small>T.C. KİMLİK</small><strong>@Model.Patient.IdentityNumber</strong></span></div>
+            <div><i class="fas fa-birthday-cake"></i><span><small>DOĞUM TARİHİ</small><strong>@Model.Patient.BirthDate.ToString("dd.MM.yyyy")</strong></span></div>
+            <div><i class="fas fa-phone-alt"></i><span><small>TELEFON</small><strong>@Model.Patient.PhoneNumber</strong></span></div>
+        </div>
+    </div>
+
+    <div class="clinic-health-grid mb-4">
+        <a href="#appointments" data-bs-toggle="collapse"><i class="fas fa-calendar-check"></i><strong>@Model.Appointments.Count</strong><span>Randevu</span></a>
+        <a href="#labs" data-bs-toggle="collapse"><i class="fas fa-flask"></i><strong>@Model.LabResults.Count</strong><span>Tahlil</span></a>
+        <a href="#prescriptions" data-bs-toggle="collapse"><i class="fas fa-prescription"></i><strong>@Model.Prescriptions.Count</strong><span>Reçete</span></a>
+        <a href="#notes" data-bs-toggle="collapse"><i class="fas fa-notes-medical"></i><strong>@Model.ExaminationNotes.Count</strong><span>Muayene</span></a>
+    </div>
+
+    <div class="accordion clinic-history" id="patientHistory">
+        <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#appointments">Randevular</button></h2>
+            <div id="appointments" class="accordion-collapse collapse show"><div class="accordion-body">
+                @foreach (var item in Model.Appointments.OrderByDescending(x => x.AppointmentDate))
+                { <div class="border-bottom py-2"><strong>@item.AppointmentDate.ToString("dd.MM.yyyy HH:mm")</strong> — @Model.DoctorNames.GetValueOrDefault(item.DoctorId, "Doktor bulunamadı") — @item.Status</div> }
+                @if (Model.Appointments.Count == 0) { <span class="text-muted">Kayıt yok.</span> }
+            </div></div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#labs">Tahliller</button></h2>
+            <div id="labs" class="accordion-collapse collapse"><div class="accordion-body">
+                @foreach (var item in Model.LabResults.OrderByDescending(x => x.ResultDate))
+                { <div class="border-bottom py-2"><strong>@item.TestName:</strong> @item.ResultValue @item.Unit — @item.Status</div> }
+                @if (Model.LabResults.Count == 0) { <span class="text-muted">Kayıt yok.</span> }
+            </div></div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#prescriptions">Reçeteler</button></h2>
+            <div id="prescriptions" class="accordion-collapse collapse"><div class="accordion-body">
+                @foreach (var item in Model.Prescriptions.OrderByDescending(x => x.PrescriptionDate))
+                { <div class="border-bottom py-2"><strong>@item.MedicationName</strong> — @item.Dosage, @item.Frequency, @item.Duration</div> }
+                @if (Model.Prescriptions.Count == 0) { <span class="text-muted">Kayıt yok.</span> }
+            </div></div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#notes">Muayene Notları</button></h2>
+            <div id="notes" class="accordion-collapse collapse"><div class="accordion-body">
+                @foreach (var item in Model.ExaminationNotes.OrderByDescending(x => x.ExaminationDate))
+                { <div class="border-bottom py-2"><strong>@item.Diagnosis</strong> — @item.Complaint<br /><small>@item.Treatment</small></div> }
+                @if (Model.ExaminationNotes.Count == 0) { <span class="text-muted">Kayıt yok.</span> }
+            </div></div>
+        </div>
+    </div>
+</div>

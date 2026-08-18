@@ -1,22 +1,23 @@
- # Hospital Management System
+# Hospital Management Web
 
-A full-stack patient registration and management application developed with ASP.NET Core, ABP Framework, Entity Framework Core, and PostgreSQL.
+ASP.NET Core ve ABP Framework ile geliştirilen, bir kliniğin hasta ve randevu süreçlerini yöneten web uygulamasıdır. Flutter mobil uygulamasıyla aynı REST API ve PostgreSQL veritabanını kullanır.
 
-## Features
+## Özellikler
 
-- List registered patients
-- Create new patient records
-- Edit existing patient information
-- Delete patient records
-- Unique identity number validation
-- REST API endpoints for patient operations
-- PostgreSQL database integration
-- Responsive web interface
+- Doktor seçimi ve doktor yönetimi
+- Hasta arama, ekleme, düzenleme, silme ve detay görüntüleme
+- Randevu oluşturma, filtreleme, tamamlama ve iptal etme
+- Doktor için tarih-saat çakışma kontrolü
+- Tahlil sonucu oluşturma ve görüntüleme
+- Reçete oluşturma, görüntüleme ve silme
+- Muayene notu oluşturma, görüntüleme ve silme
+- Hasta detayında bütün sağlık geçmişini görüntüleme
+- Haftalık takvim ve gerçek verilerle özet kartları
+- Mobil uyumlu mor-pembe arayüz
 
-## Technologies
+## Teknolojiler
 
-- .NET 10
-- ASP.NET Core
+- .NET 10 ve ASP.NET Core
 - ABP Framework
 - Entity Framework Core
 - PostgreSQL
@@ -25,39 +26,62 @@ A full-stack patient registration and management application developed with ASP.
 - Docker
 - Swagger / OpenAPI
 
-## Project Structure
+## Proje Yapısı
 
-- `Domain`: Core entities and business rules
-- `Application.Contracts`: DTOs and service interfaces
-- `Application`: Application services and mapping
-- `EntityFrameworkCore`: Database configuration and migrations
-- `HttpApi`: API layer
-- `Web`: User interface
-- `DbMigrator`: Database migration and initial data tool
+- `Domain`: Varlıklar ve temel iş kuralları
+- `Application.Contracts`: DTO ve servis arayüzleri
+- `Application`: Uygulama servisleri ve eşlemeler
+- `EntityFrameworkCore`: Veritabanı yapılandırması ve migration dosyaları
+- `HttpApi`: REST API katmanı
+- `Web`: Razor Pages kullanıcı arayüzü
+- `DbMigrator`: Veritabanı migration ve başlangıç verisi aracı
 
-## Patient Module
-
-The Patient module supports CRUD operations:
-
-- Create a patient
-- Read and list patient records
-- Update patient information
-- Delete a patient
-
-Each patient contains:
-
-- Identity number
-- First name
-- Last name
-- Birth date
-- Phone number
-
-## Configuration
-
-Sensitive configuration values are excluded from Git.
-
-Create an `appsettings.secrets.json` file inside both:
+## Ana Modüller
 
 ```text
-src/HospitalManagement.DbMigrator/
-src/HospitalManagement.Web/
+Patients          Hastalar
+Doctors           Doktorlar
+Appointments      Randevular
+LabResults        Tahlil Sonuçları
+Prescriptions     Reçeteler
+ExaminationNotes  Muayene Notları
+```
+
+## Yapılandırma
+
+PostgreSQL bağlantı bilgisini aşağıdaki klasörlerde bulunan yerel ayar dosyalarına ekleyin:
+
+```text
+src/HospitalManagement.DbMigrator/appsettings.secrets.json
+src/HospitalManagement.Web/appsettings.secrets.json
+```
+
+## Çalıştırma
+
+Önce PostgreSQL veritabanını ve gerekiyorsa migration aracını çalıştırın. Ardından web projesini başlatın:
+
+```bash
+dotnet run --project src/HospitalManagement.Web/HospitalManagement.Web.csproj
+```
+
+Projeyi yerel `5000` portunda çalıştırmak için:
+
+```bash
+dotnet run --project src/HospitalManagement.Web/HospitalManagement.Web.csproj --urls http://127.0.0.1:5000
+```
+
+Tarayıcı adresi:
+
+```text
+http://127.0.0.1:5000
+```
+
+## Kontrol
+
+```bash
+dotnet build src/HospitalManagement.Web/HospitalManagement.Web.csproj --no-restore
+```
+
+## Proje Durumu
+
+Web ve mobil uygulamalarda demo için planlanan temel klinik yönetimi özellikleri tamamlanmıştır.

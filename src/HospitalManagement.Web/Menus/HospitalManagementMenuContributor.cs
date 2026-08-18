@@ -34,6 +34,60 @@ public class HospitalManagementMenuContributor : IMenuContributor
             )
         );
 
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                "HospitalManagement.Patients",
+                "Hastalar",
+                url: "/Patients",
+                icon: "fas fa-users"
+            )
+        );
+
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                "HospitalManagement.Doctors",
+                "Doktorlar",
+                url: "/Doctors",
+                icon: "fas fa-user-md"
+            )
+        );
+
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                "HospitalManagement.Appointments",
+                "Randevular",
+                url: "/Appointments",
+                icon: "fas fa-calendar-alt"
+            )
+        );
+
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                "HospitalManagement.LabResults",
+                "Tahlil Sonuçları",
+                url: "/LabResults",
+                icon: "fas fa-flask"
+            )
+        );
+
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                "HospitalManagement.Prescriptions",
+                "Reçeteler",
+                url: "/Prescriptions",
+                icon: "fas fa-prescription"
+            )
+        );
+
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                "HospitalManagement.ExaminationNotes",
+                "Muayene Notları",
+                url: "/ExaminationNotes",
+                icon: "fas fa-notes-medical"
+            )
+        );
+
         if (MultiTenancyConsts.IsEnabled)
         {
             administration.SetSubItemOrder(TenantManagementMenuNames.GroupName, 1);

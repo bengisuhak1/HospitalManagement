@@ -1,0 +1,52 @@
+@page
+@model HospitalManagement.Web.Pages.Doctors.IndexModel
+
+@{
+    ViewData["Title"] = "Doktor Yönetimi";
+}
+
+<div class="container py-4">
+    <header class="clinic-page-header">
+        <div><span class="clinic-eyebrow">KLİNİK EKİBİ</span><h1>Doktorlar</h1><p>Doktorları ve uzmanlık alanlarını yönetin.</p></div>
+        <a asp-page="./Create" class="btn btn-primary">
+            <i class="fas fa-user-md me-2"></i>Yeni Doktor
+        </a>
+    </header>
+
+    <form method="get" class="clinic-search-bar mb-4">
+        <div class="clinic-search-input">
+            <i class="fas fa-search"></i>
+            <input asp-for="SearchTerm"
+                   class="form-control"
+                   placeholder="Ad, soyad, branş veya telefon ara..." />
+        </div>
+        <button type="submit" class="btn btn-primary">Ara</button>
+        <a asp-page="./Index" class="btn btn-outline-secondary">Temizle</a>
+    </form>
+
+    <div class="clinic-doctor-grid">
+        @foreach (var doctor in Model.Doctors)
+        {
+            <article class="clinic-doctor-card">
+                <div class="clinic-doctor-avatar"><i class="fas fa-user-md"></i></div>
+                <div class="clinic-doctor-info">
+                    <span class="clinic-eyebrow">@doctor.Specialty</span>
+                    <h2>Dr. @doctor.FirstName @doctor.LastName</h2>
+                    <p><i class="fas fa-phone-alt me-2"></i>@doctor.PhoneNumber</p>
+                </div>
+                <div class="clinic-doctor-actions">
+                    <a asp-page="./Edit" asp-route-id="@doctor.Id" class="btn btn-sm btn-outline-primary" title="Düzenle"><i class="fas fa-pen"></i></a>
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@doctor.Id" class="d-inline"
+                          onsubmit="return confirm('Bu doktoru silmek istediğinize emin misiniz?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Sil"><i class="fas fa-trash"></i></button>
+                    </form>
+                </div>
+            </article>
+        }
+    </div>
+
+    @if (Model.Doctors.Count == 0)
+    {
+        <div class="clinic-empty-state"><i class="fas fa-user-md"></i><strong>Doktor bulunamadı</strong><span>Aramayı değiştirin veya yeni doktor ekleyin.</span></div>
+    }
+</div>

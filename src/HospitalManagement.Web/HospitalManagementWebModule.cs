@@ -209,6 +209,7 @@ public class HospitalManagementWebModule : AbpModule
         app.UseCorrelationId();
         app.MapAbpStaticAssets();
         app.UseRouting();
+        app.UseMiddleware<ClinicDemoAccessMiddleware>();
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
 

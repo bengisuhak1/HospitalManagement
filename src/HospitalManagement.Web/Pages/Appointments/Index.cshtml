@@ -1,0 +1,142 @@
+@page
+@model HospitalManagement.Web.Pages.Appointments.IndexModel
+
+@{
+    ViewData["Title"] = "Randevular";
+}
+
+<div class="container py-4">
+    <header class="clinic-page-header">
+        <div>
+            <span class="clinic-eyebrow">RANDEVU YÖNETİMİ</span>
+            <h1>Randevular</h1>
+            <p>Randevuları tarihe ve duruma göre takip edin.</p>
+        </div>
+        <a asp-page="./Create" class="btn btn-primary">
+            <i class="fas fa-calendar-plus me-2"></i>Yeni Randevu
+        </a>
+    </header>
+
+    <div class="card clinic-list-card">
+        <div class="card-body p-4">
+    <form method="get" class="clinic-filter-bar mb-4">
+        <div>
+            <label asp-for="SelectedDate" class="form-label">Tarih</label>
+            <input asp-for="SelectedDate" type="date" class="form-control" />
+        </div>
+        <div>
+            <label asp-for="SelectedStatus" class="form-label">Durum</label>
+            <select asp-for="SelectedStatus" class="form-select">
+                <option value="">Tüm durumlar</option>
+                <option value="Bekliyor">Bekliyor</option>
+                <option value="Tamamlandı">Tamamlandı</option>
+                <option value="İptal">İptal</option>
+            </select>
+        </div>
+        <div class="d-grid align-self-end">
+            <button type="submit" class="btn btn-primary">Filtrele</button>
+        </div>
+        <div class="d-grid align-self-end">
+            <a asp-page="./Index" class="btn btn-outline-secondary">Temizle</a>
+        </div>
+    </form>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Tarih ve Saat</th>
+                            <th>Hasta</th>
+                            <th>Doktor</th>
+                            <th>Durum</th>
+                            <th>Not</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var appointment in Model.Appointments)
+                        {
+                            var patientName =
+                                Model.PatientNames.GetValueOrDefault(
+                                    appointment.PatientId,
+                                    "Hasta bulunamadı");
+
+                            var doctorName =
+                                Model.DoctorNames.GetValueOrDefault(
+                                    appointment.DoctorId,
+                                    "Doktor bulunamadı");
+
+                            <tr>
+                                <td class="text-nowrap">
+                                    <div class="clinic-date-cell">
+                                        <i class="far fa-calendar"></i>
+                                        <span><strong>@appointment.AppointmentDate.ToString("dd MMM yyyy")</strong><small>@appointment.AppointmentDate.ToString("HH:mm")</small></span>
+                                    </div>
+                                </td>
+                                <td>@patientName</td>
+                                <td>@doctorName</td>
+                                <td>
+                                    @if (appointment.Status == "Tamamlandı")
+                                    {
+                                        <span class="clinic-status completed">
+                                            Tamamlandı
+                                        </span>
+                                    }
+                                    else if (appointment.Status == "İptal")
+                                    {
+                                        <span class="clinic-status cancelled">
+                                            İptal
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="clinic-status waiting">
+                                            Bekliyor
+                                        </span>
+                                    }
+                                </td>
+                                <td>@appointment.Notes</td>
+                                <td class="text-nowrap">
+                                    @if (appointment.Status == "Bekliyor")
+                                    {
+                                        <form method="post"
+                                              asp-page-handler="Complete"
+                                              asp-route-id="@appointment.Id"
+                                              class="d-inline">
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-success" title="Tamamla">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                    @if (appointment.Status == "Bekliyor")
+                                    {
+                                        <form method="post"
+                                              asp-page-handler="Cancel"
+                                              asp-route-id="@appointment.Id"
+                                              class="d-inline"
+                                              onsubmit="return confirm('Bu randevuyu iptal etmek istediğinize emin misiniz?');">
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger" title="İptal Et">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.Appointments.Count == 0)
+            {
+                <div class="clinic-empty-state">
+                    <i class="far fa-calendar-times"></i>
+                    <strong>Randevu bulunamadı</strong>
+                    <span>Filtreyi temizleyin veya yeni randevu oluşturun.</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>

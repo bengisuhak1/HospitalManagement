@@ -1,0 +1,63 @@
+@page
+@model HospitalManagement.Web.Pages.Prescriptions.IndexModel
+
+@{
+    ViewData["Title"] = "Reçeteler";
+}
+
+<div class="container py-4">
+    <header class="clinic-page-header">
+        <div><span class="clinic-eyebrow">SAĞLIK KAYITLARI</span><h1>Reçeteler</h1><p>İlaç, doz ve kullanım bilgilerini tek ekrandan yönetin.</p></div>
+        <a asp-page="./Create" class="btn btn-primary"><i class="fas fa-prescription me-2"></i>Yeni Reçete</a>
+    </header>
+
+    <div class="card">
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Tarih</th>
+                            <th>Hasta</th>
+                            <th>Doktor</th>
+                            <th>İlaç</th>
+                            <th>Doz</th>
+                            <th>Kullanım</th>
+                            <th>Süre</th>
+                            <th>Açıklama</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var prescription in Model.Prescriptions)
+                        {
+                            <tr>
+                                <td>@prescription.PrescriptionDate.ToString("dd.MM.yyyy")</td>
+                                <td>@Model.PatientNames.GetValueOrDefault(prescription.PatientId, "Hasta bulunamadı")</td>
+                                <td>@Model.DoctorNames.GetValueOrDefault(prescription.DoctorId, "Doktor bulunamadı")</td>
+                                <td class="fw-semibold">@prescription.MedicationName</td>
+                                <td>@prescription.Dosage</td>
+                                <td>@prescription.Frequency</td>
+                                <td>@prescription.Duration</td>
+                                <td>@prescription.Instructions</td>
+                                <td>
+                                    <form method="post"
+                                          asp-page-handler="Delete"
+                                          asp-route-id="@prescription.Id"
+                                          onsubmit="return confirm('Bu reçeteyi silmek istediğinize emin misiniz?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Sil"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.Prescriptions.Count == 0)
+            {
+                <div class="clinic-empty-state"><i class="fas fa-prescription"></i><strong>Reçete bulunamadı</strong><span>Yeni bir reçete oluşturabilirsiniz.</span></div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+@page
+@model HospitalManagement.Web.Pages.Appointments.CreateModel
+
+@{
+    ViewData["Title"] = "Yeni Randevu Oluştur";
+}
+
+<div class="container py-4">
+    <header class="clinic-page-header">
+        <div><span class="clinic-eyebrow">RANDEVU YÖNETİMİ</span><h1>Yeni Randevu</h1><p>Hasta için uygun doktoru ve zamanı belirleyin.</p></div>
+        <a asp-page="./Index" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Randevular</a>
+    </header>
+
+    <div class="card clinic-form-card">
+        <div class="card-body p-4 p-lg-5">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="clinic-form-grid">
+                <div>
+                    <label asp-for="Appointment.PatientId"
+                           class="form-label"><i class="fas fa-user me-2"></i>Hasta</label>
+
+                    <select asp-for="Appointment.PatientId"
+                            asp-items="Model.PatientOptions"
+                            class="form-select">
+                        <option value="">Hasta seçiniz</option>
+                    </select>
+
+                    <span asp-validation-for="Appointment.PatientId"
+                          class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Appointment.DoctorId"
+                           class="form-label"><i class="fas fa-user-md me-2"></i>Doktor</label>
+
+                    <select asp-for="Appointment.DoctorId"
+                            asp-items="Model.DoctorOptions"
+                            class="form-select">
+                        <option value="">Doktor seçiniz</option>
+                    </select>
+
+                    <span asp-validation-for="Appointment.DoctorId"
+                          class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Appointment.AppointmentDate"
+                           class="form-label"><i class="fas fa-calendar-alt me-2"></i>Tarih ve Saat</label>
+
+                    <input asp-for="Appointment.AppointmentDate"
+                           type="datetime-local"
+                           min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"
+                           class="form-control" />
+
+                    <span asp-validation-for="Appointment.AppointmentDate"
+                          class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Appointment.Status"
+                           class="form-label"><i class="fas fa-info-circle me-2"></i>Durum</label>
+
+                    <select asp-for="Appointment.Status"
+                            class="form-select">
+                        <option value="Bekliyor">Bekliyor</option>
+                        <option value="Tamamlandı">Tamamlandı</option>
+                        <option value="İptal">İptal</option>
+                    </select>
+                </div>
+
+                <div class="clinic-form-full">
+                    <label asp-for="Appointment.Notes"
+                           class="form-label"><i class="fas fa-sticky-note me-2"></i>Not</label>
+
+                    <textarea asp-for="Appointment.Notes"
+                              class="form-control"
+                              rows="3"
+                              placeholder="Randevuyla ilgili kısa not..."></textarea>
+
+                    <span asp-validation-for="Appointment.Notes"
+                          class="text-danger"></span>
+                </div></div>
+
+                <div class="clinic-form-actions">
+                    <a asp-page="./Index" class="btn btn-outline-secondary">İptal</a>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-check me-2"></i>Randevu Oluştur</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

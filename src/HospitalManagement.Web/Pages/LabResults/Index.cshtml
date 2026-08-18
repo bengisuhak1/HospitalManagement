@@ -1,0 +1,54 @@
+@page
+@model HospitalManagement.Web.Pages.LabResults.IndexModel
+
+@{
+    ViewData["Title"] = "Tahlil Sonuçları";
+}
+
+<div class="container py-4">
+    <header class="clinic-page-header">
+        <div><span class="clinic-eyebrow">SAĞLIK KAYITLARI</span><h1>Tahlil Sonuçları</h1><p>Laboratuvar değerlerini ve referans durumlarını takip edin.</p></div>
+        <a asp-page="./Create" class="btn btn-primary"><i class="fas fa-flask me-2"></i>Yeni Tahlil</a>
+    </header>
+
+    <div class="card">
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Tarih</th>
+                            <th>Hasta</th>
+                            <th>Tahlil</th>
+                            <th>Sonuç</th>
+                            <th>Referans Aralığı</th>
+                            <th>Durum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var result in Model.LabResults)
+                        {
+                            <tr>
+                                <td>@result.ResultDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                <td>@Model.PatientNames.GetValueOrDefault(result.PatientId, "Hasta bulunamadı")</td>
+                                <td>@result.TestName</td>
+                                <td>@result.ResultValue @result.Unit</td>
+                                <td>@result.ReferenceRange</td>
+                                <td>
+                                    <span class="clinic-status @(result.Status == "Normal" ? "completed" : "cancelled")">
+                                        @result.Status
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.LabResults.Count == 0)
+            {
+                <div class="clinic-empty-state"><i class="fas fa-flask"></i><strong>Tahlil sonucu bulunamadı</strong><span>Yeni bir tahlil sonucu ekleyebilirsiniz.</span></div>
+            }
+        </div>
+    </div>
+</div>

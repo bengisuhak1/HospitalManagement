@@ -1,0 +1,60 @@
+@page
+@model HospitalManagement.Web.Pages.ExaminationNotes.CreateModel
+
+@{
+    ViewData["Title"] = "Yeni Muayene Notu";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header"><h2 class="mb-0">Yeni Muayene Notu</h2></div>
+        <div class="card-body">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ExaminationNote.PatientId" class="form-label">Hasta</label>
+                        <select asp-for="ExaminationNote.PatientId" asp-items="Model.PatientOptions" class="form-select">
+                            <option value="">Hasta seçiniz</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ExaminationNote.DoctorId" class="form-label">Doktor</label>
+                        <select asp-for="ExaminationNote.DoctorId" asp-items="Model.DoctorOptions" class="form-select">
+                            <option value="">Doktor seçiniz</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ExaminationNote.Complaint" class="form-label">Hastanın Şikâyeti</label>
+                    <textarea asp-for="ExaminationNote.Complaint" class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ExaminationNote.Diagnosis" class="form-label">Teşhis</label>
+                    <textarea asp-for="ExaminationNote.Diagnosis" class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ExaminationNote.Treatment" class="form-label">Tedavi Planı</label>
+                    <textarea asp-for="ExaminationNote.Treatment" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ExaminationNote.Notes" class="form-label">Ek Not</label>
+                    <textarea asp-for="ExaminationNote.Notes" class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ExaminationNote.ExaminationDate" class="form-label">Muayene Tarihi</label>
+                    <input asp-for="ExaminationNote.ExaminationDate" type="datetime-local" class="form-control" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Muayene Notunu Kaydet</button>
+                <a asp-page="./Index" class="btn btn-outline-secondary">İptal</a>
+            </form>
+        </div>
+    </div>
+</div>
